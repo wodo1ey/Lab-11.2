@@ -1,0 +1,118 @@
+# Написать программу «Редактор Simple», который позволяет:
+# 1)	Набирать в окне текст
+# 2)	Изменять цвет всего текста (4-5 цветов)
+# 3)	Изменять цвет фона окна (4-5 цветов)
+# 4)	Изменять начертание шрифта во всем тексте (курсив, полужирный, подчеркивание)
+# 5)	Изменять название шрифта во всем тексте (предлагать 4-5 вариантов)
+# 6)	Стирать содержимое окна
+# Все пункты реализовать через меню. Основное меню должно содержать три пункта:
+# 1.	Шрифт
+# 2.	Цвет
+# 3.	Очистка
+# Пункт «Шрифт» должен содержать 4-5 названий шрифтов и подменю «Начертание» (курсив, полужирный, подчеркивание, обычный). 
+# При выборе начертания «обычный» сбрасываются все предыдущие настройки начертаний (убирается полужирный, подчеркивание и курсив).
+# Пункт «Цвет» должен содержать пункты «Фон» и «Текст». Каждый пункт должен содержать подменю с названиями 4-5 цветов
+
+
+from tkinter import *
+from tkinter import font
+type = 'normal'
+
+
+def shrift(n):
+    if n == 1:
+        font1.config(family='Arial')
+    elif n == 2:
+        font1.config(family='Verdana')
+    elif n == 3:
+        font1.config(family='Times')
+    elif n == 4:
+        font1.config(family='Courier')
+    elif n == 5:
+        font1.config(slant='italic')
+    elif n == 6:
+        font1.config(weight='bold')
+    elif n == 7:
+        font1.config(underline=True)
+    elif n == 8:
+        font1.config(slant='roman', weight='normal', underline=False)
+    Text.config(font=font1)
+
+
+def color(m):
+    if m == 1:
+        Text.config(bg='black')
+    elif m == 2:
+        Text.config(bg='white')
+    elif m == 3:
+        Text.config(bg='red')
+    elif m == 4:
+        Text.config(bg='blue')
+    elif m == 5:
+        Text.config(bg='gray')
+    elif m == 6:
+        Text.config(fg='black')
+    elif m == 7:
+        Text.config(fg='white')
+    elif m == 8:
+        Text.config(fg='red')
+    elif m == 9:
+        Text.config(fg='blue')
+    elif m == 10:
+        Text.config(bg='gray')
+
+
+def delete():
+    Text.delete(0, 10000)
+
+
+root = Tk()
+root.title('Запись на курсы')
+root.geometry('500x400')
+
+mainmenu = Menu(root)
+root.config(menu=mainmenu)
+
+shtiftmenu = Menu(mainmenu)
+shtiftmenu.add_command(label='Arial', command=lambda n=1: shrift(n))
+shtiftmenu.add_command(label='Verdana', command=lambda n=2: shrift(n))
+shtiftmenu.add_command(label='Times', command=lambda n=3: shrift(n))
+shtiftmenu.add_command(label='Courier', command=lambda n=4: shrift(n))
+
+inscriptionmenu = Menu(shtiftmenu)
+inscriptionmenu.add_command(label='Курсив', command=lambda n=5: shrift(n))
+inscriptionmenu.add_command(label='Полужирный', command=lambda n=6: shrift(n))
+inscriptionmenu.add_command(label='Подчерскивание', command=lambda n=7: shrift(n))
+inscriptionmenu.add_command(label='Обычный', command=lambda n=8: shrift(n))
+
+colormenu = Menu(mainmenu)
+bgcolormenu = Menu(colormenu)
+bgcolormenu.add_cascade(label='Чёрный', command=lambda m=1: color(m))
+bgcolormenu.add_cascade(label='Белый', command=lambda m=2: color(m))
+bgcolormenu.add_cascade(label='Красный', command=lambda m=3: color(m))
+bgcolormenu.add_cascade(label='Синий', command=lambda m=4: color(m))
+bgcolormenu.add_cascade(label='Серый', command=lambda m=5: color(m))
+
+textcolormenu = Menu(colormenu)
+textcolormenu.add_cascade(label='Чёрный', command=lambda m=6: color(m))
+textcolormenu.add_cascade(label='Белый', command=lambda m=7: color(m))
+textcolormenu.add_cascade(label='Красный', command=lambda m=8: color(m))
+textcolormenu.add_cascade(label='Синий', command=lambda m=9: color(m))
+textcolormenu.add_cascade(label='Серый', command=lambda m=10: color(m))
+
+clearmenu = Menu(mainmenu)
+clearmenu.add_cascade(label='Очистка', command=delete)
+
+mainmenu.add_cascade(label='Шрифт', menu=shtiftmenu)
+mainmenu.add_cascade(label='Цвет', menu=colormenu)
+mainmenu.add_cascade(label='Очистка', menu=clearmenu)
+shtiftmenu.add_cascade(label='Начертание', menu=inscriptionmenu)
+colormenu.add_cascade(label='Фон', menu=bgcolormenu)
+colormenu.add_cascade(label='Текст', menu=textcolormenu)
+
+
+font1 = font.Font(family="Arial", size=16, weight="normal", slant="roman", underline=False, overstrike=False)
+Text = Entry(root, font=font1)
+Text.pack()
+
+root.mainloop()
